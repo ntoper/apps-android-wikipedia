@@ -7,35 +7,29 @@ import org.wikipedia.auth.AccountUtil
 class EditHistoryInteractionEvent(private var wikiDb: String, private var pageId: Int) :
     TimedEvent() {
 
-    fun logShowHistory() {
-        submitEvent("show_history")
-    }
+    fun logShowHistory() { submitEvent("show_history") }
+    fun logSearchClick() { submitEvent("search_click") }
+    fun logFilterClick() { submitEvent("filter_click") }
+    fun logFilterSelect() { submitEvent("filter_select") }
 
-    fun logRevision() {
-        submitEvent("revision_view")
-    }
+    fun logRevisionView() { submitEvent("revision_view") }
+    fun logRevisionGoNewer() { submitEvent("revision_go_newer") }
+    fun logRevisionGoOlder() { submitEvent("revision_go_older") }
+    fun logShare() { submitEvent("revision_share") }
+    fun logWatchToggle() { submitEvent("watch_toggle") }
 
-    // User tapped 'Compare' on the edit History screen to start selecting the revisions to compare
-    fun logCompare1() {
-        submitEvent("compare1")
-    }
+    fun logCompareStart() { submitEvent("compare_start") }
+    fun logCompareConfirm() { submitEvent("compare_confirm") }
 
-    // User has selected a second revision and tapped the 'Compare' button, navigating them to the comparison screen
-    fun logCompare2() {
-        submitEvent("compare2")
-    }
+    fun logThankClick() { submitEvent("thank_click") }
+    fun logThankSuccess() { submitEvent("thank_success") }
+    fun logThankCancel() { submitEvent("thank_cancel") }
+    fun logThankError() { submitEvent("thank_error") }
 
-    fun logThankTry() {
-        submitEvent("thank_try")
-    }
-
-    fun logThankSuccess() {
-        submitEvent("thank_success")
-    }
-
-    fun logThankFail() {
-        submitEvent("thank_fail")
-    }
+    fun logUndoClick() { submitEvent("undo_click") }
+    fun logUndoSuccess() { submitEvent("undo_success") }
+    fun logUndoCancel() { submitEvent("undo_cancel") }
+    fun logUndoError() { submitEvent("undo_error") }
 
     private fun submitEvent(action: String) {
         EventPlatformClient.submit(EditHistoryInteractionEventImpl(!AccountUtil.isLoggedIn, duration, wikiDb, pageId, action))
