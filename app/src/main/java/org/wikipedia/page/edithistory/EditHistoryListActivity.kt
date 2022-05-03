@@ -90,7 +90,7 @@ class EditHistoryListActivity : BaseActivity() {
         binding.compareButton.setOnClickListener {
             viewModel.toggleCompareState()
             updateCompareState()
-            editHistoryInteractionEvent?.logCompare1()
+            editHistoryInteractionEvent?.logCompareStart()
         }
 
         binding.compareConfirmButton.setOnClickListener {
@@ -99,7 +99,7 @@ class EditHistoryListActivity : BaseActivity() {
                         viewModel.pageTitle, viewModel.selectedRevisionFrom!!.revId,
                         viewModel.selectedRevisionTo!!.revId))
             }
-            editHistoryInteractionEvent?.logCompare2()
+            editHistoryInteractionEvent?.logCompareConfirm()
         }
 
         binding.editHistoryRefreshContainer.setOnRefreshListener {
@@ -224,6 +224,7 @@ class EditHistoryListActivity : BaseActivity() {
                 searchActionModeCallback.searchBarFilterIcon!! else if (editHistorySearchBarAdapter.viewHolder != null)
                     editHistorySearchBarAdapter.viewHolder!!.binding.filterByButton else binding.root
             EditHistoryFilterOverflowView(this@EditHistoryListActivity).show(anchorView, editCountsFlowValue) {
+                editHistoryInteractionEvent?.logFilterSelect()
                 setupAdapters()
                 editHistoryListAdapter.reload()
                 editHistorySearchBarAdapter.notifyItemChanged(0)
@@ -231,6 +232,7 @@ class EditHistoryListActivity : BaseActivity() {
                     searchActionModeCallback.updateFilterIconAndText()
                 }
             }
+            editHistoryInteractionEvent?.logFilterClick()
         }
     }
 
@@ -375,6 +377,7 @@ class EditHistoryListActivity : BaseActivity() {
                 )
 
                 itemView.setOnClickListener {
+                    editHistoryInteractionEvent?.logSearchClick()
                     startSearchActionMode()
                 }
 
@@ -439,7 +442,7 @@ class EditHistoryListActivity : BaseActivity() {
             if (!viewModel.comparing) {
                 viewModel.toggleCompareState()
                 updateCompareState()
-                editHistoryInteractionEvent?.logCompare1()
+                editHistoryInteractionEvent?.logCompareStart()
             }
             toggleSelectState()
         }

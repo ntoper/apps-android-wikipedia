@@ -9,8 +9,9 @@ import org.wikipedia.R
 import org.wikipedia.databinding.DialogUndoEditBinding
 
 class UndoEditDialog constructor(context: Context, callback: Callback) : AlertDialog(context) {
-    fun interface Callback {
+    interface Callback {
         fun onSuccess(text: CharSequence)
+        fun onCancel()
     }
 
     private var binding = DialogUndoEditBinding.inflate(LayoutInflater.from(context))
@@ -22,7 +23,9 @@ class UndoEditDialog constructor(context: Context, callback: Callback) : AlertDi
         setButton(BUTTON_POSITIVE, context.getString(R.string.edit_undo)) { _, _ ->
             callback.onSuccess(binding.textInput.text.toString())
         }
-        setButton(BUTTON_NEGATIVE, context.getString(R.string.text_input_dialog_cancel_button_text)) { _, _ -> }
+        setButton(BUTTON_NEGATIVE, context.getString(R.string.text_input_dialog_cancel_button_text)) { _, _ ->
+            callback.onCancel()
+        }
         create()
         setPositiveButtonEnabled(false)
     }
