@@ -101,7 +101,8 @@ object JavaScriptActionHandler {
                 "   \"textSizeAdjustmentPercentage\": \"100%%\"," +
                 "   \"loadImages\": ${Prefs.isImageDownloadEnabled}," +
                 "   \"userGroups\": \"${AccountUtil.groups}\"," +
-                "   \"isEditable\": ${!Prefs.readingFocusModeEnabled}" +
+                "   \"isEditable\": ${!Prefs.readingFocusModeEnabled}," +
+                "   \"talkPageButton\": ${!Prefs.readingFocusModeEnabled}" +
                 "}", topMargin, 16, 48, 16, leadImageHeight)
     }
 
