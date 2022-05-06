@@ -837,7 +837,7 @@ class PageFragment : Fragment(), BackPressedHandler, CommunicationBridge.Communi
                 when (payload["itemType"]?.jsonPrimitive?.content) {
                     "talkPage" -> model.title?.run {
                         articleInteractionEvent?.logTalkPageArticleClick()
-                        startTalkTopicActivity(this)
+                        startTalkTopicActivity(this, PAGE_ACTIVITY)
                     }
                     "languages" -> startLangLinksActivity()
                     "lastEdited" -> {
