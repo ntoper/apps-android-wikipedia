@@ -117,7 +117,7 @@ class PageActivity : BaseActivity(), PageFragment.Callback, LinkPreviewDialog.Ca
         binding.pageToolbarButtonTabs.updateTabCount(false)
         binding.pageToolbarButtonTabs.setOnClickListener {
             pageFragment.articleInteractionEvent?.logTabsClick()
-            TabActivity.captureFirstTabBitmap(pageFragment.containerView)
+            TabActivity.captureFirstTabBitmap(pageFragment.containerView, pageFragment.title?.prefixedText.orEmpty())
             startActivityForResult(TabActivity.newIntentFromPageActivity(this), Constants.ACTIVITY_REQUEST_BROWSE_TABS)
         }
         toolbarHideHandler = ViewHideHandler(binding.pageToolbarContainer, null, Gravity.TOP)
@@ -237,7 +237,8 @@ class PageActivity : BaseActivity(), PageFragment.Callback, LinkPreviewDialog.Ca
         } else if (requestCode == Constants.ACTIVITY_REQUEST_DESCRIPTION_EDIT_TUTORIAL && resultCode == RESULT_OK) {
             Prefs.isDescriptionEditTutorialEnabled = false
             data?.let {
-                pageFragment.startDescriptionEditActivity(it.getStringExtra(DescriptionEditTutorialActivity.DESCRIPTION_SELECTED_TEXT))
+                pageFragment.startDescriptionEditActivity(it.getStringExtra(DescriptionEditTutorialActivity.DESCRIPTION_SELECTED_TEXT),
+                        it.getSerializableExtra(Constants.INTENT_EXTRA_INVOKE_SOURCE) as InvokeSource)
             }
         } else if ((requestCode == Constants.ACTIVITY_REQUEST_IMAGE_CAPTION_EDIT || requestCode == Constants.ACTIVITY_REQUEST_IMAGE_TAGS_EDIT ||
                     requestCode == Constants.ACTIVITY_REQUEST_DESCRIPTION_EDIT) && (resultCode == RESULT_OK ||

@@ -26,6 +26,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -38,7 +40,6 @@ import org.wikipedia.Constants
 import org.wikipedia.R
 import org.wikipedia.WikipediaApp
 import org.wikipedia.activity.BaseActivity
-import org.wikipedia.analytics.NotificationInteractionFunnel
 import org.wikipedia.analytics.NotificationPreferencesFunnel
 import org.wikipedia.analytics.eventplatform.NotificationInteractionEvent
 import org.wikipedia.databinding.ActivityNotificationsBinding
@@ -327,7 +328,7 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun adjustRefreshViewLayoutParams(removeLayoutBehavior: Boolean) {
-        (binding.notificationsRefreshView.layoutParams as CoordinatorLayout.LayoutParams).apply {
+        binding.notificationsRefreshView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
             behavior = if (removeLayoutBehavior) null else AppBarLayout.ScrollingViewBehavior()
             topMargin = if (removeLayoutBehavior) DimenUtil.getToolbarHeightPx(this@NotificationActivity) else 0
         }
@@ -396,9 +397,9 @@ class NotificationActivity : BaseActivity() {
                     binding.notificationSource.setCompoundDrawables(null, null,
                             if (UriUtil.isAppSupportedLink(Uri.parse(it))) null else externalLinkIcon, null)
                 }
-                val params = binding.notificationSource.layoutParams as ConstraintLayout.LayoutParams
-                params.setMargins(DimenUtil.roundedDpToPx(8f), 0, 0, 0)
-                binding.notificationSource.layoutParams = params
+                binding.notificationSource.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    updateMargins(left = DimenUtil.roundedDpToPx(8f))
+                }
 
                 when {
                     langCode == Constants.WIKI_CODE_WIKIDATA -> {
@@ -422,8 +423,9 @@ class NotificationActivity : BaseActivity() {
                             SearchFragment.LANG_BUTTON_TEXT_SIZE_SMALLER, SearchFragment.LANG_BUTTON_TEXT_SIZE_MEDIUM)
                     }
                     else -> {
-                        params.setMargins(0, DimenUtil.roundedDpToPx(12f), 0, 0)
-                        binding.notificationSource.layoutParams = params
+                        binding.notificationSource.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                            updateMargins(top = DimenUtil.roundedDpToPx(12f))
+                        }
                         binding.notificationWikiCodeContainer.isVisible = false
                     }
                 }
@@ -475,7 +477,6 @@ class NotificationActivity : BaseActivity() {
                 n.contents?.links?.getPrimary()?.let { link ->
                     val url = link.url
                     if (url.isNotEmpty()) {
-                        NotificationInteractionFunnel(WikipediaApp.getInstance(), n).logAction(NotificationInteractionEvent.ACTION_PRIMARY, link)
                         NotificationInteractionEvent.logAction(n, NotificationInteractionEvent.ACTION_PRIMARY, link)
                         linkHandler.wikiSite = WikiSite(url)
                         linkHandler.onUrlClick(url, null, "")

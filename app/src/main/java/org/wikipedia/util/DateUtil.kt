@@ -22,7 +22,7 @@ object DateUtil {
 
     @Synchronized
     fun iso8601DateParse(date: String): Date {
-        return getCachedDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT, true).parse(date)!!
+        return getCachedDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT, true).parse(date)!!
     }
 
     @Synchronized
@@ -99,6 +99,10 @@ object DateUtil {
 
     fun getDateAndTimeWithPipe(date: Date): String {
         return getCachedDateFormat("MMM d, yyyy | HH:mm", Locale.getDefault(), false).format(date)
+    }
+
+    fun getDateAndTime(date: Date): String {
+        return getCachedDateFormat("MMM d, yyyy, HH:mm", Locale.getDefault(), false).format(date)
     }
 
     @Synchronized
